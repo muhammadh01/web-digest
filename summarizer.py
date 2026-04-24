@@ -1,16 +1,9 @@
-"""
-summarizer.py
--------------
-Takes website text and asks an OpenAI model to summarize it.
-"""
-
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
 from scraper import fetch_website_contents
 
-# Load OPENAI_API_KEY from the .env file
 load_dotenv(override=True)
 
 SYSTEM_PROMPT = """
@@ -28,24 +21,14 @@ USER_PROMPT_PREFIX = (
 MODEL = "gpt-4.1-mini"
 
 
-def _build_messages(website_text: str) -> list[dict]:
-    """Build the chat-completions messages list."""
+def _build_messages(website_text):
     return [
         {"role": "system", "content": SYSTEM_PROMPT.strip()},
         {"role": "user", "content": USER_PROMPT_PREFIX + website_text},
     ]
 
 
-def summarize(url: str) -> str:
-    """
-    Fetch a URL and return an LLM-generated summary in markdown.
-
-    Args:
-        url: The full URL to summarize.
-
-    Returns:
-        The markdown summary as a string.
-    """
+def summarize(url):
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise RuntimeError(

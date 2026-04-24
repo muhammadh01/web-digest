@@ -1,24 +1,10 @@
-"""
-main.py
--------
-Command-line entry point for web-digest.
-
-Usage:
-    python main.py <url>
-
-Example:
-    python main.py https://anthropic.com
-"""
-
 import sys
-
 from summarizer import summarize
 
 
-def main() -> int:
+def main():
     if len(sys.argv) != 2:
         print("Usage: python main.py <url>")
-        print("Example: python main.py https://anthropic.com")
         return 1
 
     url = sys.argv[1]

@@ -1,14 +1,6 @@
-"""
-scraper.py
------------
-Fetches a website and returns its cleaned text content,
-stripping out scripts, styles, and other noise.
-"""
-
 import requests
 from bs4 import BeautifulSoup
 
-# A realistic User-Agent so websites don't block us as "unknown bot"
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -18,25 +10,12 @@ HEADERS = {
 }
 
 
-def fetch_website_contents(url: str) -> str:
-    """
-    Download a web page and return its visible text.
-
-    Args:
-        url: The full URL of the website (must include http:// or https://).
-
-    Returns:
-        A string containing the page title and cleaned body text.
-
-    Raises:
-        requests.HTTPError: If the site returns a non-2xx status code.
-    """
+def fetch_website_contents(url):
     response = requests.get(url, headers=HEADERS, timeout=20)
     response.raise_for_status()
 
     soup = BeautifulSoup(response.content, "html.parser")
 
-    # Remove tags that add noise but no real content
     for tag in soup(["script", "style", "img", "input", "nav", "footer"]):
         tag.decompose()
 
